@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load partials %}
+{% block content %}
+    <dialog class="modal" id="pollForm">
+        <div class="modal-box">
+            <form class="mt-4"
+                  hx-post="{% url 'submit-poll' %}"
+                  hx-target="#polls-tbody"
+                  hx-swap="beforeend"
+                  hx-on::after-request="this.reset()">
+                <div class="form-control">
+                    <label for={{ form.title.id_for_label }}> Title
+                    </label>
+                    {% render_field form.title class="input input-bordered input-md" %}
+                </div>
+                <div class="form-control">
+                    <label for={{ form.body.id_for_label }}> Body
+                    </label>
+                    {% render_field form.body class="textarea textarea-bordered textarea-md" %}
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Create</button>
+            </form>
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+    <div class="mx-10 md:mx-20">
+        <div class="my-4 px-6">
+            <div class="mt-4 flex flex-row justify-between">
+                <h3 class="text-lg font-bold">Start A New Form</h3>
+                <button type=""
+                        class="btn btn-sm md:btn-md lg:btn-lg btn-success"
+                        onclick="pollForm.showModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="16"
+                         height="16"
+                         fill="currentColor"
+                         class="bi bi-plus-lg"
+                         viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-4">
+                <div class="">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-sm sm:text-md">Title</th>
+                                <th class="text-sm sm:text-md">Created At</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="polls-tbody">
+                            {% for poll in polls %}
+                                {% include "sm-modal.html" with modal_id=poll.modal_id %}
+                                {% partialdef polls-partial inline=True %}
+                                <tr>
+                                    <th>{{ forloop.counter }}</th>
+                                    <td>{{ poll.title }}</td>
+                                    <td>{{ poll.created_at|date:"Y-m-d" }}</td>
+                                    <td class="p-4">
+                                        <div class="flex flex-row">
+                                            <button class="btn btn-xs sm:btn-sm  hidden sm:block btn-outline btn-error mx-2"
+                                                    hx-delete="{% url 'delete-poll' poll.id %}"
+                                                    hx-target="closest tr"
+                                                    hx-swap="outerHTMl">Delete</button>
+                                            <button class="btn btn-xs sm:btn-sm hidden sm:block btn-outline btn-success mx-2">Details</button>
+                                            <button class="btn btn-xs sm:btn-sm  hidden sm:block btn-outline btn-primary mx-2">Update</button>
+                                        </div>
+                                        <!-- small device button -->
+                                        <button class="btn btn-sm md:hidden lg:hidden btn-primary"
+                                                onclick="{{ poll.modal_id }}.showModal()">Details</button>
+                                    </td>
+                                </tr>
+                            {% endpartialdef %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

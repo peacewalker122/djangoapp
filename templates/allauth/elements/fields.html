@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+<div class="form-control">
+    {% for field in attrs.form %}
+        <label for={{ field.id_for_label }} class="label"> {{ field.label }}
+        </label>
+        {% if field.field.widget.input_type == 'text' %}
+            {% render_field field class="input input-bordered input-md my-2" %}
+        {% elif field.field.widget.input_type == 'textarea' %}
+            {% render_field field class="textarea textarea-bordered textarea-md" %}
+        {% elif field.field.widget.input_type == 'checkbox' %}
+            {% render_field field class="checkbox my-2" %}
+        {% elif field.field.widget.input_type == 'password' %}
+            {% render_field field class="input input-bordered input-md my-2" %}
+        {% elif field.field.widget.input_type == 'email' %}
+            {% render_field field class="input input-bordered input-md" placeholder="example@email.com" %}
+        {% endif %}
+    {% endfor %}
+</div>

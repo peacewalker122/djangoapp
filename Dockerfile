@@ -19,7 +19,7 @@ ENV VIRTUAL_ENV=/app/.venv \
   PATH="/app/.venv/bin:$PATH"
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-RUN pip install psycopg2-binary 
+RUN pip install --no-cache-dir psycopg2-binary
 
 COPY --from=builder /app /app
 WORKDIR /app

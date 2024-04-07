@@ -1,4 +1,5 @@
 FROM python:3.10 as builder
+
 # Install poetry
 RUN pip install poetry
 RUN mkdir -p /app

@@ -24,4 +24,7 @@ RUN pip install --no-cache-dir psycopg2-binary
 
 COPY --from=builder /app /app
 WORKDIR /app
+
+EXPOSE 8000
+
 CMD ["granian", "--interface", "wsgi", "core.wsgi:application", "--port", "8000", "--log"]

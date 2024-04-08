@@ -15,6 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = os.environ.get("ENV", "dev")
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,10 +32,12 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["*"]
 
-# Input example https://www.web.id, https://www.myweb.id
-CSRF_TRUSTED_ORIGINS = [
-    str(origin) for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
-]
+if env == "prod":
+    # Input example https://www.web.id, https://www.myweb.id
+    CSRF_TRUSTED_ORIGINS = [
+        str(origin) for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    ]
+
 
 # Application definition
 

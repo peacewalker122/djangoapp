@@ -18,6 +18,32 @@
         {% element form form=form method="post" action=action_url tags="entrance,signup" %}
         {% slot body %}
         {% csrf_token %}
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div role="alert" class="alert alert-error mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="stroke-current shrink-0 h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{{ error|escape }}</span>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div role="alert" class="alert alert-error mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="stroke-current shrink-0 h-6 w-6"
+                         fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>{{ error|escape }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
         {% element fields form=form unlabeled=True %}
     {% endelement %}
     {% if redirect_field_value %}

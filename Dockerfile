@@ -26,4 +26,5 @@ COPY --from=builder /app /app
 WORKDIR /app
 
 EXPOSE 8000
-CMD ["granian", "--interface", "wsgi", "core.wsgi:application", "--port", "8000", "--log"]
+# CMD ["granian", "--interface", "wsgi", "core.wsgi:application", "--port", "8000", "--log"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
